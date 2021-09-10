@@ -7,7 +7,8 @@
 #### Document APIs
 [官方参考文档 Document APIs](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/docs.html)  
 [Index API](./doc/API/IndexAPI.md)  
-[Query API](./doc/API/QueryAPI.md)
+[Query API](./doc/API/QueryAPI.md)  
+[Aggregation 使用](./doc/API/aggregation.md)
 
 ### kibana
 [Install](./doc/kibana/install-config.md)  
