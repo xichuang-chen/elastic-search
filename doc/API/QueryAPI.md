@@ -110,7 +110,8 @@ Filter 有自动 cache 功能，可以提升查询效率
 ![img.png](assets/query-dsl-example.png)
 
 
-### match
+### match and term
+[match and term](match-and-term.md)
 
-#### 1. term
-#### 2. terms
+### mapping
+[mapping](mapping-and-type.md)
