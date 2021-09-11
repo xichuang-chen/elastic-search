@@ -107,7 +107,7 @@ Filter 有自动 cache 功能，可以提升查询效率
 
 ### 实战使用
 借助官网实例 [Query and filter context](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/query-filter-context.html#query-filter-context)  
-![img.png](query-dsl-example.png)
+![img.png](assets/query-dsl-example.png)
 
 
 ### match

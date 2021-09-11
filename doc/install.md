@@ -7,7 +7,7 @@
 ```shell
 brew install elasticsearch
 ```   
-![img.png](install-es-info.png)
+![img.png](assets/install-es-info.png)
 #### 2. 启动
 非后台启动
 ```shell 
