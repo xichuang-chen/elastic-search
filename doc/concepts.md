@@ -1,22 +1,26 @@
 # Arch
-![img.png](assets/elastic-search-arch.png)  
+![img.png](assets/elastic-search-arch.png)
 
 [参考链接](https://www.zhihu.com/question/323811022)
 ## Cluster
 - 一个cluster由一个或多个node组成
 - 一个cluster包含所有的数据
 - cluster name是区分cluster的唯一标示（默认是 `elasticsearch` ）, 
-  所以多个cluster名字要区分, 比如 `logging-stage` `longging-prod`等
+  所以多个cluster名字要区分, 比如 `logging-stage` `longging-prod`等  
+  Node 只能通过cluster名字加入其cluster
 - [cluster](https://www.elastic.co/guide/en/elasticsearch/reference/6.5/getting-started-concepts.html#_cluster)
 
 ## Node
+- 一个 Node 并一定是一台机器，也可以一个机器上部署多个node， 当然这不是一个好的实践
 - Node 和 cluster一样，都由名字唯一标示，node在启动时候会随机分配一个
 - Node 包含很多 Shards
 
 ## Shards & Replicas
 ### 为什么分片
+- 可以理解为mysql的分表
 - 一个index的数据可能很大，一个node存不下，所以index存储时可以指定存到几个shards上
 - 多个分片，在写入或查询的时候就可以并行操作（从各个节点中读写数据，提高吞吐量）
+- 建立索引时，可以设置想要的分片数量
 
 ### 如何实现高可用
 - 每个分片都有对应的副本，副本会拷贝主分片数据
@@ -24,6 +28,10 @@
 - 每个主分片的副本可以有一个或多个
 - 默认情况下，es为每个index分配5个shards，和一个replica.  
   如果你有两个node，则5个主的在一个node,另外5个备份的在一个node.
+
+### Replicas
+shards 分 primary  和  replicas
+
 
 ## 倒排索引
 ### 正排索引
@@ -67,3 +75,7 @@ FST有两个优点：
 Elasticsearch 是 面向文档 的，意味着它存储整个对象或 文档。Elasticsearch 不仅存储文档，而且 索引 每个文档的内容，使之可以被检索。在 Elasticsearch 中，我们对文档进行索引、检索、排序和过滤—​而不是对行列数据。这是一种完全不同的思考数据的方式，也是 Elasticsearch 能支持复杂全文检索的原因。
 #### 与sql之间的概念映射
 ![img.png](assets/sql-elastic.png)
+
+## Mapping
+处理数据的方式和规则方面做限制，如：某字段的数据类型、默认值、分析器、是否被索引等
+具体使用查看[mapping](./API/mapping-and-type.md)
