@@ -68,6 +68,18 @@ FST有两个优点：
 
 [参考链接](https://www.zhihu.com/question/323811022/answer/981341195)
 
+#### 倒排索引的更新
+倒排索引被写入磁盘后，不可改变，永远不会修改
+价值：
+- 不需要锁
+
+**如何更新倒排索引？**  
+用更多的索引。 增加新的补充索引来反映新近的修改，然后查询时 综合所有索引，
+这就是为啥会有segment的概念
+
+**倒排索引如何删除？**
+倒排索引不能改变。删除的话，会把需要删除的segment 文件标记为.del。这样查询时就跳过这些。这叫逻辑删除，文件还在  
+倒排索引还有一个合并操作。 合并之后会删除这些 .del 
 
 ## 其他概念
 ### 与sql对比
@@ -77,5 +89,90 @@ Elasticsearch 是 面向文档 的，意味着它存储整个对象或 文档。
 ![img.png](assets/sql-elastic.png)
 
 ## Mapping
-处理数据的方式和规则方面做限制，如：某字段的数据类型、默认值、分析器、是否被索引等
+处理数据的方式和规则方面做限制，如：某字段的数据类型、默认值、分析器、是否被索引等   
 具体使用查看[mapping](./API/mapping-and-type.md)
+
+## 分词器
+elasticsearch 在写入数据和查询数据时需要使用分词器进行分词  
+### 系统默认 standard 分词器
+elasticsearch 系统默认使用 `standard` 分词器  
+查看 elasticsearch `standard` 分词器分词效果  
+```json
+GET _analyze
+{
+  "analyzer": "standard",
+  "text": "How can I learn more and more knowledge"
+}
+```
+
+Response: 
+```json
+{
+  "tokens" : [
+    {
+      "token" : "how",
+      "start_offset" : 0,
+      "end_offset" : 3,
+      "type" : "<ALPHANUM>",
+      "position" : 0
+    },
+    {
+      "token" : "can",
+      "start_offset" : 4,
+      "end_offset" : 7,
+      "type" : "<ALPHANUM>",
+      "position" : 1
+    },
+    {
+      "token" : "i",
+      "start_offset" : 8,
+      "end_offset" : 9,
+      "type" : "<ALPHANUM>",
+      "position" : 2
+    },
+    {
+      "token" : "learn",
+      "start_offset" : 10,
+      "end_offset" : 15,
+      "type" : "<ALPHANUM>",
+      "position" : 3
+    },
+    {
+      "token" : "more",
+      "start_offset" : 16,
+      "end_offset" : 20,
+      "type" : "<ALPHANUM>",
+      "position" : 4
+    },
+    {
+      "token" : "and",
+      "start_offset" : 21,
+      "end_offset" : 24,
+      "type" : "<ALPHANUM>",
+      "position" : 5
+    },
+    {
+      "token" : "more",
+      "start_offset" : 25,
+      "end_offset" : 29,
+      "type" : "<ALPHANUM>",
+      "position" : 6
+    },
+    {
+      "token" : "knowledge",
+      "start_offset" : 30,
+      "end_offset" : 39,
+      "type" : "<ALPHANUM>",
+      "position" : 7
+    }
+  ]
+}
+```
+全变小写了，所以你输入大小写都可以查询到  
+还有其他一些分词器，不再概述
+
+### 指定分词器
+可以在查询或put index时指定分词器
+
+### 自定义分词器
+可以在mapping中设置
